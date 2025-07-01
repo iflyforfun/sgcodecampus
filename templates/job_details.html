@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <strong>Notice:</strong>
+            {% for message in messages %}
+                <span>{{ message }}</span>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-center">{{ job.title }}</h2>
+                <p class="card-text">
+                    <strong>Description:</strong> {{ job.description }}
+                </p>
+                <p class="card-text">
+                    <strong>Required Skills:</strong> {{ job.job_scope }}
+                </p>
+                <p class="card-text">
+                    <strong>Pay:</strong> {{ job.pay }}
+                </p>
+                <p class="card-text">
+                    <strong>Shift Time:</strong> {{ job.shift_time }}
+                </p>
+            </div>
+        </div>
+
+        {% if current_user.__class__.__name__ == 'Admin' %}
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Applicants</h3>
+            </div>
+            <div class="card-body">
+                {% if job.applicants | length > 0 %}
+                <ul class="list-group" id="applicants-list">
+                    {% for applicant_id, applicant_details in job.applicants.items() %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center applicant">
+                            <strong>{{ applicant_details['name'] }}</strong> ({{ applicant_details['type'] }})
+                            <span class="score">Suitability: {{ applicant_details['score'] }}/10</span>
+                            {% if applicant_details['status'] == 'applied' %}
+                                <span class="badge bg-warning text-dark">{{ applicant_details['status'] }}</span>
+                            {% elif applicant_details['status'] == 'REJECTED' %}
+                                <span class="badge bg-danger">{{ applicant_details['status'] }}</span>
+                            {% elif applicant_details['status'] == 'CONFIRMED' %}
+                                <span class="badge bg-success">{{ applicant_details['status'] }}</span>
+                                <a href="{{ url_for('complete_job', job_id=job.id, applicant_id=applicant_id) }}" class="btn btn-info btn-sm">Completed Job</a>
+                            {% endif %}
+                            {% if applicant_details['status'] == 'applied' %}
+                            <form action="{{ url_for('update_applicant_status', job_id=job.id, applicant_id=applicant_id) }}" method="POST" class="d-inline">
+                                <button type="submit" name="action" value="accept" class="btn btn-success btn-sm">Accept</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>                
+                {% else %}
+                    <p class="text-muted text-center">No applicants yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+<h2>Applicants for Job: {{ job.title }}</h2>
+<ul>
+    {% for applicant in job.applicants %}
+        <li>
+            {{ applicant }}
+            <form method="POST" action="{{ url_for('view_applicants', job_id=job.id) }}">
+                <input type="hidden" name="applicant_name" value="{{ applicant }}">
+                <button type="submit" name="action" value="accept" class="btn btn-success btn-sm">Accept</button>
+                <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

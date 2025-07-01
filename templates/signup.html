@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content" style="margin-bottom: 100px;">
+    <div class="container-fluid d-flex justify-content-center align-items-center vh-100 p-0">
+        <div class="col-md-6 p-0 d-flex justify-content-center align-items-center">
+            <img src="{{ url_for('static', filename='hospital.jpg') }}" alt="Hospital" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; border-radius: 8px;">
+        </div>
+
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center" style="height: 100%; padding: 0 20px;">
+            <div class="text-center mb-5">
+                <h2 class="text-center" id="header" style="color: #4F8A8B;">Sign Up</h2>
+            </div>
+
+            <div id="userSelection" class="text-center mb-4">
+                <button id="nurseSignUpBtn" class="btn btn-primary mx-2 px-4 py-2" onclick="showForm('nurse', 'signup')">Sign Up as Nurse</button>
+                <button id="adminSignUpBtn" class="btn btn-info mx-2 px-4 py-2" onclick="showForm('admin', 'signup')">Sign Up as Admin</button>
+            </div>
+
+            <form id="signUpForm" method="POST" action="/signup" style="display: none; width: 100%; max-width: 400px; background-color: #f1f1f1; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <input type="hidden" id="user_type" name="user_type">
+                <input type="hidden" id="action_type" name="action_type">
+
+                <div class="form-group mb-3">
+                    <label for="name" style="font-weight: bold;">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="email" style="font-weight: bold;">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password" style="font-weight: bold;">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="confirm_password" style="font-weight: bold;">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="user_type" style="font-weight: bold;">Account Type</label>
+                    <select class="form-select" id="user_type_select" name="user_type" required disabled>
+                        <option value="nurse">Nurse</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3" id="specialization-group" style="display: none;">
+                    <label for="specialization" style="font-weight: bold;">Nurse Specialization</label>
+                    <select class="form-select" id="specialization" name="specialization" required>
+                        <option value="Community Health">Community Health</option>
+                        <option value="Critical Care">Critical Care</option>
+                        <option value="Gerontology">Gerontology</option>
+                        <option value="Emergency">Emergency</option>
+                    </select>
+                </div>
+                
+                <div class="form-group mb-3" id="race" style="display: none;">
+                    <label for="race" style="font-weight: bold;">Race</label>
+                    <select class="form-select" id="race" name="race" required>
+                        <option value="Chinese">Chinese</option>
+                        <option value="Malay">Malay</option>
+                        <option value="Indian">Indian</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dob" style="font-weight: bold;">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="gender" style="font-weight: bold;">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success w-100 py-2">Sign Up</button>
+                </div>
+            </form>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-warning mt-3">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function showForm(userType, actionType) {
+        document.getElementById('user_type_select').value = userType;
+        document.getElementById('user_type').value = userType;
+        document.getElementById('action_type').value = actionType;
+
+        document.getElementById('userSelection').style.display = 'none';
+
+        document.getElementById('signUpForm').style.display = 'block';
+
+        document.getElementById('header').style.display = 'none';
+
+        if (userType === 'nurse') {
+            document.getElementById('specialization-group').style.display = 'block';
+            document.getElementById('race').style.display = 'block';
+        } else {
+            document.getElementById('specialization-group').style.display = 'none';
+        }
+    }
+</script>
+
+
+
+{% endblock %}

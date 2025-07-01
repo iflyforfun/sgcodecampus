@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content" style="margin-top: 63px;">
+    <section class="hero">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="3000">
+                    <img src="{{ url_for('static', filename='hospital_horizontal.jpg') }}" class="d-block w-100" alt="Slide 1" style="object-fit: cover; width: 100%; height: calc(100vh - 56px);">
+                    <div class="carousel-caption d-none d-md-block" style="color: black;">
+                        <h2>Welcome to Nurse Hub</h2>
+                        <h5>Connecting Healthcare Facilities with Freelance Nurses for Flexible Work</h5>
+                    </div>
+                </div>
+
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="{{ url_for('static', filename='flexible_hours.jpg') }}" class="d-block w-100" alt="Slide 2" style="object-fit: cover; width: 100%; height: calc(100vh - 56px);">
+                    <div class="carousel-caption d-none d-md-block" style="color: black;">
+                        <h2>Flexible Work Hours</h2>
+                        <h5>Empowering nurses to choose their own schedules and locations.</h5>
+                    </div>
+                </div>
+
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="{{ url_for('static', filename='matching.jpg') }}" class="d-block w-100" alt="Slide 3" style="object-fit: cover; width: 100%; height: calc(100vh - 56px);">
+                    <div class="carousel-caption d-none d-md-block" style="color: black;">
+                        <h2>Instant Job Matching</h2>
+                        <h5>Find the best match based on skills, availability, and proximity.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features py-5" style="background-color: #f4f4f9;">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="fade-up" data-aos-duration="1000">Why Choose Nurse Hub?</h2>
+            <div class="row">
+                <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-duration="1000">
+                    <div class="feature-icon mb-3">
+                        <img src="{{ url_for('static', filename='man.png') }}" alt="Access a Talented Pool" class="img-fluid mb-3" style="object-fit: cover; width: 150px; height: 150px;">
+                    </div>
+                    <h4 class="mb-3">Access a Talented Pool</h4>
+                    <p>Real-time access to qualified nurses ready to fill your staffing needs.</p>
+                </div>
+                <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="feature-icon mb-3">
+                        <img src="{{ url_for('static', filename='clock.png') }}" alt="Flexible Hours" class="img-fluid mb-3" style="object-fit: cover; width: 150px; height: 150px;">
+                    </div>
+                    <h4 class="mb-3">Flexible Hours</h4>
+                    <p>Nurses can choose their working hours, giving you a flexible workforce.</p>
+                </div>
+                <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="400">
+                    <div class="feature-icon mb-3">
+                        <img src="{{ url_for('static', filename='plus.png') }}" alt="Easy Job Matching" class="img-fluid mb-3" style="object-fit: cover; width: 150px; height: 150px;">
+                    </div>
+                    <h4 class="mb-3">Easy Job Matching</h4>
+                    <p>Our algorithm finds the best job match based on skills and availability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta py-5" style="background-color: #2d3748; color: #ffffff;" data-aos="fade-up" data-aos-duration="1000">
+        <div class="container text-center">
+            <h2 class="display-4 mb-3">Join Our Community Today!</h2>
+            <p class="lead mb-4">Create an account and start connecting with healthcare facilities.</p>
+            <a href="/signup" class="btn btn-light btn-lg">Sign Up Now</a>
+        </div>
+    </section>
+
+    <section class="testimonials py-5" style="background-color: #e9ecef;">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="fade-up" data-aos-duration="1000">What Our Users Say</h2>
+            <div class="row">
+                <div class="col-md-4" data-aos="flip-left" data-aos-duration="1000">
+                    <div class="testimonial p-4 border rounded shadow-sm" style="background-color: #ffffff;">
+                        <p>"Nurse Hub has transformed the way I find work. The flexibility is amazing!"</p>
+                        <cite>- Sarah, Freelance Nurse</cite>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="testimonial p-4 border rounded shadow-sm" style="background-color: #ffffff;">
+                        <p>"Finding qualified nurses for our facility has never been easier."</p>
+                        <cite>- John, Healthcare Facility Manager</cite>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="400">
+                    <div class="testimonial p-4 border rounded shadow-sm" style="background-color: #ffffff;">
+                        <p>"The platform is user-friendly and the support team is great!"</p>
+                        <cite>- Emily, Freelance Nurse</cite>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

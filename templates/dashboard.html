@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <strong>Notice:</strong>
+            {% for message in messages %}
+                <span>{{ message }}</span>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endwith %}
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body bg-secondary text-white">
+                        <h5 class="card-title">{{ 'Nurse' if current_user.__class__.__name__ == 'Nurse' else 'Admin' }} Menu</h5>
+                        <div class="list-group">
+                            {% if current_user.__class__.__name__ == 'Nurse' %}
+                                <a href="#" class="list-group-item list-group-item-action text-danger bg-light">My Shifts</a>
+                                <a href="/jobs" class="list-group-item list-group-item-action text-danger bg-light">Available Jobs</a>
+                                <a href="#" class="list-group-item list-group-item-action text-danger bg-light">Profile</a>
+                            {% elif current_user.__class__.__name__ == 'Admin' %}
+                                <a href="/post_job" class="list-group-item list-group-item-action text-danger bg-light">Create Job Post</a>
+                                <a href="/matches" class="list-group-item list-group-item-action text-danger bg-light">Manage Requests</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card mb-4 shadow-sm border-0">
+                    <div class="card-body border-bottom bg-light">
+                        <h3 class="card-title text-danger">Welcome to Your Dashboard</h3>
+                        <p class="card-text">
+                            {{ 'Manage your shifts and job applications' if current_user.__class__.__name__ == 'Nurse' else 'Oversee facility staffing and requests' }}
+                        </p>
+                    </div>
+                </div>
+
+                {% if current_user.__class__.__name__ == 'Nurse' %}
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-danger text-white">Upcoming Shifts</div>
+                                <div class="card-body">
+                                    <p>View details of your scheduled shifts below:</p>
+                                    <ul>
+                                        <li>Shift on Monday, 9 AM - 5 PM</li>
+                                    </ul>
+                                    <button class="btn btn-danger w-100 mt-2">View All Shifts</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-danger text-white">Total Revenue</div>
+                                <div class="card-body">
+                                    <h4 class="mb-2 text-danger">$8,450</h4>
+                                    <p>Earnings from completed shifts this month.</p>
+                                    <button class="btn btn-danger w-100 mt-2">View Earnings Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-header bg-danger text-white">Profile Information</div>
+                        <div class="card-body">
+                            <p><strong>Name:</strong> {{ current_user.name }}</p>
+                            <p><strong>Email:</strong> {{ current_user.email }}</p>
+                            <p><strong>Department:</strong> Pediatrics</p>
+                            <p><strong>Experience:</strong> 5 years</p>
+                            <button class="btn btn-danger w-100 mt-2">Edit Profile</button>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-header bg-danger text-white">Ratings and Reviews</div>
+                        <div class="card-body">
+                            <h5>Current Rating: {{ current_user.experience }}/10</h5>
+                            <h5>Your Reviews:</h5>
+                            {% if current_user.reviews.values()|length > 0 %}
+                                <ul>
+                                    {% for review in current_user.reviews.values() %}
+                                        <li><strong>Review:</strong> {{ review }}</li>
+                                        <hr>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>Kind and helps out proactively.</p>
+                                <p>Shows proactiveness and is very friendly with the patients.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% elif current_user.__class__.__name__ == 'Admin' %}
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-danger text-white">Current Application Requests</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Application from John Doe - Pending</li>
+                                        <li>Application from Sarah Connor - Approved</li>
+                                        <li>Application from Tom Smith - Under Review</li>
+                                    </ul>
+                                    <a href="/matches"class="btn btn-danger w-100 mt-2">Manage Applications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-danger text-white">Recent Activity</div>
+                                <div class="card-body">
+                                    <p>Monitor staffing activities and updates:</p>
+                                    <ul>
+                                        <li>New job post created for Pediatrics</li>
+                                        <li>5 applications received for ICU shift</li>
+                                        <li>3 nurses confirmed for the weekend</li>
+                                    </ul>
+                                    <button class="btn btn-danger w-100 mt-2">View Full Activity Log</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div> 
+{% endblock %}

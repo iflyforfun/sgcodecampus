@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Complete Job</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ job.title }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ job.description }}</p>
+                        <p class="card-text"><strong>Job Scope:</strong> {{ job.job_scope }}</p>
+                        <p class="card-text"><strong>Pay:</strong> {{ job.pay }}</p>
+                        <p class="card-text"><strong>Shift Time:</strong> {{ job.shift_time }}</p>
+
+                        <hr>
+
+                        <h6 class="mb-3">Nurse Details</h6>
+                        {% if job.applicants %}
+                            {% for applicant_id, applicant in job.applicants.items() %}
+                                {% if applicant['status'] == 'CONFIRMED' %}
+                                    <div class="mb-4">
+                                        <h5>{{ applicant['name'] }}</h5>
+                                        <p><strong>Specialization:</strong> {{ applicant['type'] }}</p>
+                                        <p><strong>Experience:</strong> {{ applicant.get('experience', 'Not provided') }}</p>
+                                        <p><strong>Rating:</strong> 
+                                            {% if applicant['rating'] %}
+                                                {{ applicant['rating'] }} / 10
+                                            {% else %}
+                                                Not rated yet
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <form method="POST" action="{{ url_for('complete_job', job_id=job.id) }}?applicant_id={{ applicant_id }}">
+                                        <div class="form-group">
+                                            <label for="review">Review</label>
+                                            <textarea class="form-control" id="review" name="review" rows="3" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="rating">Rating (1-10)</label>
+                                            <input type="number" class="form-control" id="rating" name="rating" min="1" max="10" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-3">Complete Job</button>
+                                    </form>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <p>No applicants have been confirmed for this job.</p>
+                        {% endif %}
+
+                        {% if job.completed %}
+                            <p class="text-success mt-3"><strong>This job has already been completed.</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateRandomRating() {
+        const randomRating = (Math.floor(Math.random() * 4) + 7);
+        return randomRating;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const ratingElements = document.querySelectorAll('.random-rating');
+        ratingElements.forEach(function(element) {
+            element.textContent = generateRandomRating();
+        });
+    });
+</script>
+{% endblock %}

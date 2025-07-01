@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <strong>Notice:</strong>
+            {% for message in messages %}
+                <span>{{ message }}</span>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="container my-5">
+        <h1 class="text-center mb-4" style="color: #4F8A8B;">Available Jobs</h1>
+        
+        <div class="row justify-content-center">
+            {% for job in jobs %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ job.title }}</h5>
+                        <hr>
+                        <p class="card-text"><strong>Job Description:</strong> {{ job.description }}</p>
+                        <p class="card-text"><strong>Required Skills:</strong> {{ job.job_scope }}</p>
+                        <p class="card-text"><strong>Pay:</strong> {{ job.pay }}</p>
+                        <p class="card-text"><strong>Applicants:</strong>
+                            {% if job.applicants %}
+                                <ul>
+                                    {% for applicant_id, applicant_info in job.applicants.items() %}
+                                        <li>{{ applicant_info['name'] }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span>No applicants yet.</span>
+                            {% endif %}
+                        </p>                        
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="/job/{{ job.id }}" class="btn btn-success btn-sm">View Job Details and Applicants</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if not jobs %}
+        <div class="alert alert-warning text-center">
+            No available jobs at the moment.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

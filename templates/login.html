@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content" style="margin-bottom: 100px;">
+    <div class="container-fluid d-flex justify-content-center align-items-center vh-100 p-0 content">
+        <div class="col-md-6 p-0 d-flex justify-content-center align-items-center">
+            <img src="{{ url_for('static', filename='hospital.jpg') }}" alt="Hospital" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; border-radius: 8px;">
+        </div>
+
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center" style="height: 100%; padding: 0 20px;">
+            <div class="text-center mb-5">
+                <h2 id="header" style="color: #4F8A8B;">Login</h2>
+            </div>
+
+            <div id="userSelection" class="text-center mb-4">
+                <button id="nurseLoginBtn" class="btn btn-primary mx-2 px-4 py-2" onclick="showForm('nurse', 'login')">Login as Nurse</button>
+                <button id="adminLoginBtn" class="btn btn-info mx-2 px-4 py-2" onclick="showForm('admin', 'login')">Login as Admin</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <p><small>Don't have an account?</small> <a href="/signup" style="color: #4F8A8B; font-weight: bold;">Sign Up</a></p>
+            </div>
+
+            <form id="loginForm" method="POST" action="/login" style="display: none; width: 100%; max-width: 400px; background-color: #f1f1f1; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <input type="hidden" id="user_type" name="user_type">
+                <input type="hidden" id="action_type" name="action_type">
+
+                <div class="form-group mb-3">
+                    <label for="email" style="font-weight: bold;">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password" style="font-weight: bold;">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="/forgot-password" class="text-decoration-none" style="color: #4F8A8B;">Forgot Password?</a>
+                </div>
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success w-100 py-2">Submit</button>
+                </div>
+            </form>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-warning mt-3">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function showForm(userType, actionType) {
+        document.getElementById('user_type').value = userType;
+        document.getElementById('action_type').value = actionType;
+
+        document.getElementById('userSelection').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+
+        if (actionType === 'login') {
+            document.getElementById('header').innerText = 'Login as ' + userType.charAt(0).toUpperCase() + userType.slice(1);
+        }
+    }
+</script>
+
+{% endblock %}

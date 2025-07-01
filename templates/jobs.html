@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content" style="margin-top: 10px;">
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-danger">Job Search</h1>
+        <p class="text-muted">Find the perfect job that matches your skills and specialization.</p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="text-danger">Filter and Sort Jobs</h4>
+            <form method="GET" action="{{ url_for('view_jobs') }}">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <select class="form-control border-danger" name="specialization">
+                            <option value="">Filter by Specialization</option>
+                            <option value="Community Health" {% if request.args.get('specialization') == 'Community Health' %}selected{% endif %}>Community Health</option>
+                            <option value="Critical Care" {% if request.args.get('specialization') == 'Critical Care' %}selected{% endif %}>Critical Care</option>
+                            <option value="Gerontology" {% if request.args.get('specialization') == 'Gerontology' %}selected{% endif %}>Gerontology</option>
+                            <option value="Emergency" {% if request.args.get('specialization') == 'Emergency' %}selected{% endif %}>Emergency</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <select class="form-control border-danger" name="sort_by">
+                            <option value="pay" {% if request.args.get('sort_by') == 'pay' %}selected{% endif %}>Sort by Pay</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-danger btn-block">Filter & Sort</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if jobs|length > 0 %}
+            {% for job in jobs %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm h-100 border-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ job.title }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ job.description }}</p>
+                        <p class="card-text"><strong>Scope:</strong> {{ job.job_scope }}</p>
+                        <p class="card-text text-danger"><strong>Pay:</strong> ${{ job.pay }}</p>
+                        <p class="card-text"><strong>Shift Time:</strong> {{ job.shift_time }}</p>
+                        
+                        {% if current_user.__class__.__name__ == 'Nurse' %}
+                            {% if current_user.id not in job.applicants %}
+                                <form method="POST" action="{{ url_for('apply_for_job', job_id=job.id) }}">
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">Apply for Job</button>
+                                </form>
+                            {% else %}
+                                <p class="text-success mt-2">You have already applied for this job.</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                <h5 class="text-muted">No jobs found. Try adjusting your filters.</h5>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
